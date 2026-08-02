@@ -17,12 +17,12 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (process.env.CLIENT_URL || "http://localhost:5173").trim(),
   })
 );
 
 // Local product photos — drop files into backend/uploads and reference them
-// as http://localhost:5000/uploads/<filename> in the product's `image` field.
+// as <this server's base URL>/uploads/<filename> in the product's `image` field.
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Health check
