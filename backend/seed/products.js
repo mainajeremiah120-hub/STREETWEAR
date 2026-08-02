@@ -1,7 +1,10 @@
 // Catalog for STREETWEAR — prices in KES.
 // `color` is used to render the flat product tile when there's no image.
 // `image` should point at a photo in backend/uploads (served at
-// http://localhost:5000/uploads/<filename>) or a real hosted image URL.
+// https://streetwear-ep4g.vercel.app/uploads/<filename> in production, or a
+// real hosted image URL). Using the production domain here — rather than
+// localhost — means the same URL works whether you're testing locally or
+// live, since the file is served by the deployed backend either way.
 //
 // After editing this file, run `npm run seed` from backend/ to sync it to
 // the database. This WIPES the products collection and reinserts exactly
@@ -13,7 +16,7 @@ export const products = [
     name: "Black Hoodie",
     slug: "black-hoodie",
     sku: "SW-HOOD-001",
-    image: "http://localhost:5000/uploads/black-hoodie.png",
+    image: "https://streetwear-ep4g.vercel.app/uploads/black-hoodie.png",
     category: "hoodies",
     drop: "DROP 01",
     price: 1500,
@@ -27,7 +30,7 @@ export const products = [
     name: "T-shirt",
     slug: "t-shirt",
     sku: "SW-TSHIRT-001",
-    image: "http://localhost:5000/uploads/t-shirt-loyalty.png",
+    image: "https://streetwear-ep4g.vercel.app/uploads/t-shirt-loyalty.png",
     category: "tshirts",
     drop: "DROP 01",
     price: 300,
