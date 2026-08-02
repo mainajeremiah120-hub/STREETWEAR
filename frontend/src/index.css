@@ -1107,6 +1107,10 @@ img {
   .checkout { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .summary { position: static; }
+  /* Keep the floating WhatsApp button from sitting on top of — and
+     blocking taps on — buttons near the bottom of the page (e.g. "Place
+     order"), since it's fixed to the same corner on every screen. */
+  main { padding-bottom: 100px; }
 }
 
 @media (max-width: 560px) {

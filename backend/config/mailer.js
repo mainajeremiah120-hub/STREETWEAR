@@ -8,15 +8,18 @@ const CARD = "#161616";
 const PAPER = "#e8e4dc";
 const STEEL = "#9a948a";
 
+function emailUser() {
+  return (process.env.EMAIL_USER || "").trim();
+}
+
 function getTransporter() {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) return null;
+  const user = emailUser();
+  const pass = (process.env.EMAIL_APP_PASSWORD || "").replace(/\s+/g, "");
+  if (!user || !pass) return null;
   if (!transporter) {
     transporter = nodemailer.createTransport({
       service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD,
-      },
+      auth: { user, pass },
     });
   }
   return transporter;
@@ -130,7 +133,7 @@ Your drop ships within 48 hours.
 
   try {
     await mailer.sendMail({
-      from: `"STREETWEAR" <${process.env.EMAIL_USER}>`,
+      from: `"STREETWEAR" <${emailUser()}>`,
       to: order.customer.email,
       subject: `Order confirmed — ${order.orderNumber}`,
       text,
@@ -147,7 +150,7 @@ export async function sendOwnerAlert(order) {
   const mailer = getTransporter();
   if (!mailer) return; // already warned in sendOrderConfirmation
 
-  const ownerEmail = (process.env.OWNER_EMAIL || process.env.EMAIL_USER || "").trim();
+  const ownerEmail = (process.env.OWNER_EMAIL || "").trim() || emailUser();
   if (!ownerEmail) return;
 
   const itemLines = order.items
@@ -228,7 +231,7 @@ Ship to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.cou
 
   try {
     await mailer.sendMail({
-      from: `"STREETWEAR" <${process.env.EMAIL_USER}>`,
+      from: `"STREETWEAR" <${emailUser()}>`,
       to: ownerEmail,
       subject: `New order — ${order.orderNumber} (KES ${order.total.toLocaleString()})`,
       text,
