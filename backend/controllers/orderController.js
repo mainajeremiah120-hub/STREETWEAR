@@ -1,6 +1,6 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
-import { sendOrderConfirmation } from "../config/mailer.js";
+import { sendOrderConfirmation, sendOwnerAlert } from "../config/mailer.js";
 
 // POST /api/orders
 export async function createOrder(req, res, next) {
@@ -51,7 +51,9 @@ export async function createOrder(req, res, next) {
       await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.qty } });
     }
 
-    sendOrderConfirmation(order); // fire-and-forget — a failed email shouldn't fail the order
+    // Fire-and-forget — a failed email shouldn't fail the order
+    sendOrderConfirmation(order);
+    sendOwnerAlert(order);
 
     res.status(201).json(order);
   } catch (err) {
