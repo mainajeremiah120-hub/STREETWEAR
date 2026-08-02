@@ -84,7 +84,7 @@ export default function ProductDetail() {
 
           <p className="label-mono" style={{ marginTop: 18 }}>
             {product.stock > 0
-              ? `${product.stock} left in this drop · Free shipping over KES 5,000`
+              ? `${product.stock} left in this drop · Free shipping over KES 1,500`
               : "This piece is ghost."}
           </p>
         </div>

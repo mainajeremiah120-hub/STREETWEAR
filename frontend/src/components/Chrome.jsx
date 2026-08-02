@@ -30,7 +30,7 @@ export function Navbar() {
 // Types each phrase out like a typewriter, pauses, deletes, then moves to the next
 const TICKER_PHRASES = [
   "STREETWEAR — DROP 01 LIVE",
-  "FREE SHIPPING OVER KES 5,000",
+  "FREE SHIPPING OVER KES 1,500",
   "WEAR THE STREETS",
 ];
 

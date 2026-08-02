@@ -33,7 +33,7 @@ export async function createOrder(req, res, next) {
       });
     }
 
-    const shippingFee = subtotal >= 5000 ? 0 : 300; // free shipping over KES 5,000
+    const shippingFee = subtotal >= 1500 ? 0 : 100; // free shipping over KES 1,500
     const total = subtotal + shippingFee;
 
     const order = await Order.create({
@@ -46,9 +46,16 @@ export async function createOrder(req, res, next) {
       paymentMethod: paymentMethod || "mpesa",
     });
 
-    // Decrement stock
+    // Decrement stock, and mark sold out (clamped at 0) once it runs out
     for (const item of validatedItems) {
-      await Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.qty } });
+      const updated = await Product.findByIdAndUpdate(
+        item.product,
+        { $inc: { stock: -item.qty } },
+        { new: true }
+      );
+      if (updated.stock <= 0) {
+        await Product.findByIdAndUpdate(item.product, { stock: 0, soldOut: true });
+      }
     }
 
     // Fire-and-forget — a failed email shouldn't fail the order

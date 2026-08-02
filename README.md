@@ -25,7 +25,7 @@ streetwear/
 - Product listing with `?category=`, `?featured=`, `?search=` filters
 - Order creation that **re-prices on the server** (clients can't fake prices) and **decrements stock**
 - Auto-generated order numbers (e.g. `STREETWEAR-X7K2P`)
-- Free shipping over KES 5,000, else KES 300
+- Free shipping over KES 1,500, else KES 100
 - CORS, error handling, health check
 
 ---

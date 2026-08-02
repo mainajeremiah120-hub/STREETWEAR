@@ -4,7 +4,7 @@ import Product from "../models/Product.js";
 export async function getProducts(req, res, next) {
   try {
     const { category, featured, search } = req.query;
-    const filter = {};
+    const filter = { stock: { $gt: 0 }, soldOut: { $ne: true } }; // out-of-stock products don't show in the store
 
     if (category && category !== "all") filter.category = category;
     if (featured === "true") filter.featured = true;
