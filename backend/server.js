@@ -1,0 +1,45 @@
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { connectDB } from "./config/db.js";
+import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
+
+dotenv.config();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const app = express();
+
+app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+  })
+);
+
+// Local product photos — drop files into backend/uploads and reference them
+// as http://localhost:5000/uploads/<filename> in the product's `image` field.
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Health check
+app.get("/", (req, res) => {
+  res.json({ status: "STREETWEAR API is live", drop: "DROP 01" });
+});
+
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`STREETWEAR API running on http://localhost:${PORT}`);
+  });
+});
