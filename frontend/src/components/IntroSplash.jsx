@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../api/client.js";
+import blackHoodie from "../assets/black-hoodie.jpg";
+import tshirtLoyalty from "../assets/t-shirt-loyalty.jpg";
 
-// Real product photos as a last-resort fallback if the API is unreachable —
-// same loremflickr source the catalog seed itself uses.
-const FALLBACK_GARMENTS = [
-  { image: "https://loremflickr.com/600/750/hoodie?lock=901", name: "HOODIE / DROP 01", category: "hoodies" },
-  { image: "https://loremflickr.com/600/750/cap,streetwear?lock=902", name: "TRUCKER CAP", category: "headwear" },
-  { image: "https://loremflickr.com/600/750/sneakers?lock=903", name: "STREET KICKS", category: "footwear" },
+// Bundled directly into the frontend build (served from Vercel's static CDN)
+// instead of fetched from the API — no backend round-trip or cold-start
+// delay before these can start rendering.
+const GARMENTS = [
+  { image: tshirtLoyalty, name: "T-shirt" },
+  { image: blackHoodie, name: "Black Hoodie" },
 ];
 
 const SLOTS = ["ga", "gb", "gc"];
@@ -16,7 +17,6 @@ export default function IntroSplash({ onEnter }) {
   const [started, setStarted] = useState(false);
   const [exiting, setExiting] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [garments, setGarments] = useState(FALLBACK_GARMENTS);
   const [typed, setTyped] = useState("");
   const stageRef = useRef(null);
   const audioCtxRef = useRef(null);
@@ -111,17 +111,6 @@ export default function IntroSplash({ onEnter }) {
     }
   }
 
-  useEffect(() => {
-    api
-      .getProducts("?featured=true")
-      .then((data) => {
-        if (data && data.length) setGarments(data.slice(0, 3));
-      })
-      .catch(() => {
-        // keep fallback photos
-      });
-  }, []);
-
   function handlePointerMove(e) {
     if (reduceMotion || !stageRef.current) return;
     const rect = stageRef.current.getBoundingClientRect();
@@ -155,12 +144,12 @@ export default function IntroSplash({ onEnter }) {
         style={{ "--mx": `${tilt.x}deg`, "--my": `${tilt.y}deg` }}
         aria-hidden="true"
       >
-        {garments.map((g, i) => (
-          <div className={`intro-garment ${SLOTS[i]}`} key={g._id || g.name}>
+        {GARMENTS.map((g, i) => (
+          <div className={`intro-garment ${SLOTS[i]}`} key={g.name}>
             <div className="intro-garment-photo">
               <img src={g.image} alt="" loading="eager" />
             </div>
-            <span>{g.name || g.category}</span>
+            <span>{g.name}</span>
           </div>
         ))}
       </div>
