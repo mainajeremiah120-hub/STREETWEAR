@@ -10,7 +10,9 @@ const TILE_PHOTOS = [tshirtLoyalty, blackHoodie];
 // Cycled per tile for a mosaic of squares, parallelograms, and trapezoids
 // instead of a uniform grid.
 const TILE_SHAPES = ["sq", "para-r", "trap", "para-l"];
-const GRID_TILES = Array.from({ length: 24 }, (_, i) => ({
+// Generous count so the grid always has enough tiles to reach the bottom
+// of tall/wide screens — excess is simply clipped by the grid's overflow.
+const GRID_TILES = Array.from({ length: 120 }, (_, i) => ({
   src: TILE_PHOTOS[i % TILE_PHOTOS.length],
   shape: TILE_SHAPES[i % TILE_SHAPES.length],
 }));
