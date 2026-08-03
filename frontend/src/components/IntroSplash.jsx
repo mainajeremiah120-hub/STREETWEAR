@@ -7,7 +7,13 @@ import tshirtLoyalty from "../assets/t-shirt-loyalty.jpg";
 // delay before these can start rendering. Repeated to tile a full-bleed
 // photo grid — a "cabro" paving-block pattern — behind the splash.
 const TILE_PHOTOS = [tshirtLoyalty, blackHoodie];
-const GRID_TILES = Array.from({ length: 24 }, (_, i) => TILE_PHOTOS[i % TILE_PHOTOS.length]);
+// Cycled per tile for a mosaic of squares, parallelograms, and trapezoids
+// instead of a uniform grid.
+const TILE_SHAPES = ["sq", "para-r", "trap", "para-l"];
+const GRID_TILES = Array.from({ length: 24 }, (_, i) => ({
+  src: TILE_PHOTOS[i % TILE_PHOTOS.length],
+  shape: TILE_SHAPES[i % TILE_SHAPES.length],
+}));
 
 const CLASH_TEXT = "THE CLASH";
 
@@ -119,19 +125,13 @@ export default function IntroSplash({ onEnter }) {
       aria-label="STREETWEAR intro"
     >
       <div className="intro-photo-grid" aria-hidden="true">
-        {GRID_TILES.map((src, i) => (
-          <div className="intro-photo-tile" key={i}>
-            <img src={src} alt="" loading="eager" />
+        {GRID_TILES.map((t, i) => (
+          <div className={`intro-photo-tile tile-${t.shape}`} key={i}>
+            <img src={t.src} alt="" loading="eager" />
           </div>
         ))}
       </div>
       <div className="intro-photo-overlay" aria-hidden="true" />
-
-      <div className="intro-smoke" aria-hidden="true">
-        <span className="blob blob-a" />
-        <span className="blob blob-b" />
-        <span className="blob blob-c" />
-      </div>
       <div className="intro-grain" aria-hidden="true" />
 
       {!started ? (
