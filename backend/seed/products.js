@@ -40,4 +40,18 @@ export const products = [
     stock: 10,
     featured: true,
   },
+  {
+    name: "Trucker Cap",
+    slug: "trucker-cap",
+    sku: "SW-CAP-001",
+    image: "https://streetwear-ep4g.vercel.app/uploads/trucker-cap.jpg",
+    category: "caps",
+    drop: "DROP 01",
+    price: 200,
+    description: "Street Cap",
+    color: "#0a0a0a",
+    sizes: ["One Size"],
+    stock: 10,
+    featured: true,
+  },
 ];
