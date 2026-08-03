@@ -874,7 +874,6 @@ img {
   justify-content: center;
   overflow: hidden;
   background: var(--ink);
-  perspective: 1200px;
   animation: intro-in 0.5s ease;
 }
 .intro-exit {
@@ -938,55 +937,34 @@ img {
   pointer-events: none;
 }
 
-.intro-garments {
+/* Full-bleed photo grid behind the splash — a "cabro" paving-block pattern
+   made from the real product photos, tiled edge-to-edge with thin dark
+   grout lines between tiles. */
+.intro-photo-grid {
   position: absolute;
   inset: 0;
-  transform-style: preserve-3d;
-  pointer-events: none;
-  animation: auto-tilt 11s ease-in-out infinite;
-}
-@keyframes auto-tilt {
-  0%, 100% { transform: rotateX(calc(-5deg + var(--my, 0deg))) rotateY(calc(-11deg + var(--mx, 0deg))); }
-  50% { transform: rotateX(calc(5deg + var(--my, 0deg))) rotateY(calc(11deg + var(--mx, 0deg))); }
-}
-.intro-garment {
-  position: absolute;
-  width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  border: 2px solid var(--hazard);
-  background: rgba(10, 10, 10, 0.55);
-  padding: 10px 10px 12px;
-  backdrop-filter: blur(2px);
-  animation: bob 5s ease-in-out infinite;
-}
-.intro-garment-photo {
-  width: 100%;
-  aspect-ratio: 4 / 5;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-auto-rows: 150px;
+  gap: 3px;
+  background: #000;
   overflow: hidden;
-  background: #111;
 }
-.intro-garment-photo img {
+.intro-photo-tile {
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.intro-photo-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.08) saturate(1.15);
+  display: block;
+  filter: grayscale(0.25) brightness(0.5) contrast(1.15) saturate(1.05);
 }
-.intro-garment span {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-align: center;
-  color: var(--paper);
-}
-.intro-garment.ga { top: 12%; left: 8%; animation-delay: 0s; transform: translateZ(40px) rotate(-6deg); }
-.intro-garment.gb { top: 16%; right: 6%; border-color: var(--caution); animation-delay: -1.6s; animation-duration: 6s; transform: translateZ(80px) rotate(8deg); }
-.intro-garment.gc { bottom: 10%; left: 12%; border-color: var(--paper); animation-delay: -3.2s; animation-duration: 4.4s; transform: translateZ(20px) rotate(4deg); }
-@keyframes bob {
-  0%, 100% { margin-top: 0; }
-  50% { margin-top: -16px; }
+.intro-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 55%, rgba(10, 10, 10, 0.55), rgba(10, 10, 10, 0.92) 75%);
 }
 
 .intro-content {
@@ -1084,11 +1062,7 @@ img {
 }
 
 @media (max-width: 720px) {
-  .intro-garment { width: 92px; padding: 6px 6px 8px; }
-  .intro-garment span { font-size: 7.5px; letter-spacing: 0.06em; }
-  .intro-garment.ga { top: 8%; left: 4%; }
-  .intro-garment.gb { top: 8%; right: 4%; }
-  .intro-garment.gc { bottom: 6%; left: 50%; margin-left: -46px; }
+  .intro-photo-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-auto-rows: 110px; }
   .intro-sub { font-size: 14px; }
 }
 
@@ -1096,8 +1070,6 @@ img {
   .intro { animation: none; }
   .intro-exit { animation: none; opacity: 0; }
   .blob { animation: none; }
-  .intro-garments { animation: none; }
-  .intro-garment { animation: none; }
   .flash-text { animation: none; text-shadow: 0 0 24px rgba(255, 77, 0, 0.6); }
 }
 

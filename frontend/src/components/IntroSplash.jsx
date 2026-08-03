@@ -4,21 +4,17 @@ import tshirtLoyalty from "../assets/t-shirt-loyalty.jpg";
 
 // Bundled directly into the frontend build (served from Vercel's static CDN)
 // instead of fetched from the API — no backend round-trip or cold-start
-// delay before these can start rendering.
-const GARMENTS = [
-  { image: tshirtLoyalty, name: "T-shirt" },
-  { image: blackHoodie, name: "Black Hoodie" },
-];
+// delay before these can start rendering. Repeated to tile a full-bleed
+// photo grid — a "cabro" paving-block pattern — behind the splash.
+const TILE_PHOTOS = [tshirtLoyalty, blackHoodie];
+const GRID_TILES = Array.from({ length: 24 }, (_, i) => TILE_PHOTOS[i % TILE_PHOTOS.length]);
 
-const SLOTS = ["ga", "gb", "gc"];
 const CLASH_TEXT = "THE CLASH";
 
 export default function IntroSplash({ onEnter }) {
   const [started, setStarted] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [typed, setTyped] = useState("");
-  const stageRef = useRef(null);
   const audioCtxRef = useRef(null);
   const typeTimerRef = useRef(null);
   const reduceMotion =
@@ -111,14 +107,6 @@ export default function IntroSplash({ onEnter }) {
     }
   }
 
-  function handlePointerMove(e) {
-    if (reduceMotion || !stageRef.current) return;
-    const rect = stageRef.current.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: px * 14, y: py * -14 });
-  }
-
   function enter() {
     setExiting(true);
     setTimeout(onEnter, reduceMotion ? 0 : 620);
@@ -127,32 +115,24 @@ export default function IntroSplash({ onEnter }) {
   return (
     <div
       className={`intro${exiting ? " intro-exit" : ""}`}
-      ref={stageRef}
-      onPointerMove={handlePointerMove}
       role="dialog"
       aria-label="STREETWEAR intro"
     >
+      <div className="intro-photo-grid" aria-hidden="true">
+        {GRID_TILES.map((src, i) => (
+          <div className="intro-photo-tile" key={i}>
+            <img src={src} alt="" loading="eager" />
+          </div>
+        ))}
+      </div>
+      <div className="intro-photo-overlay" aria-hidden="true" />
+
       <div className="intro-smoke" aria-hidden="true">
         <span className="blob blob-a" />
         <span className="blob blob-b" />
         <span className="blob blob-c" />
       </div>
       <div className="intro-grain" aria-hidden="true" />
-
-      <div
-        className="intro-garments"
-        style={{ "--mx": `${tilt.x}deg`, "--my": `${tilt.y}deg` }}
-        aria-hidden="true"
-      >
-        {GARMENTS.map((g, i) => (
-          <div className={`intro-garment ${SLOTS[i]}`} key={g.name}>
-            <div className="intro-garment-photo">
-              <img src={g.image} alt="" loading="eager" />
-            </div>
-            <span>{g.name}</span>
-          </div>
-        ))}
-      </div>
 
       {!started ? (
         <div className="intro-gate">
