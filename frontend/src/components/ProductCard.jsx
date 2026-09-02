@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
   return (
     <article className="card" onClick={open}>
       <div className="card-tile" style={{ background: product.color }}>
-        <span className="card-mark">STREETWEAR</span>
+        <span className="card-mark">KIRIJO</span>
         {product.image && (
           <img
             src={product.image}

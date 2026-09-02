@@ -27,7 +27,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Health check
 app.get("/", (req, res) => {
-  res.json({ status: "STREETWEAR API is live", drop: "DROP 01" });
+  res.json({ status: "KIRIJO PHARMACY API is live" });
 });
 
 app.use("/api/products", productRoutes);
@@ -40,6 +40,6 @@ const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`STREETWEAR API running on http://localhost:${PORT}`);
+    console.log(`KIRIJO PHARMACY API running on http://localhost:${PORT}`);
   });
 });

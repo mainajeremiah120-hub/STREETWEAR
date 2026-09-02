@@ -1,7 +1,7 @@
 {
-  "name": "streetwear-backend",
+  "name": "kirijo-pharmacy-backend",
   "version": "1.0.0",
-  "description": "STREETWEAR streetwear store - Express + MongoDB API",
+  "description": "KIRIJO PHARMACY - Express + MongoDB API",
   "type": "module",
   "main": "server.js",
   "scripts": {

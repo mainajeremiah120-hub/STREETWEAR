@@ -5,10 +5,10 @@ import ProductCard from "../components/ProductCard.jsx";
 
 const CATEGORIES = [
   ["all", "All"],
-  ["tshirts", "T-Shirts"],
-  ["hoodies", "Hoodies"],
-  ["jeans", "Jeans"],
-  ["caps", "Caps"],
+  ["medicines", "Medicines"],
+  ["vitamins", "Vitamins"],
+  ["skincare", "Skincare"],
+  ["personal-care", "Personal Care"],
 ];
 
 export default function Shop() {
@@ -39,11 +39,11 @@ export default function Shop() {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <div className="section-index">[ SHOP / DROP 01 ]</div>
+            <div className="section-index">[ SHOP / ALL PRODUCTS ]</div>
             <h2 className="section-title">All Products</h2>
           </div>
           <p className="section-note">
-            {products.length} {products.length === 1 ? "piece" : "pieces"} available
+            {products.length} {products.length === 1 ? "product" : "products"} available
           </p>
         </div>
 

@@ -18,7 +18,7 @@ export default function CartDrawer() {
       <div className="overlay" onClick={() => setOpen(false)} />
       <aside className="drawer" role="dialog" aria-label="Shopping cart">
         <div className="drawer-head">
-          <h3>Your Bag</h3>
+          <h3>Your Cart</h3>
           <button className="cart-remove" onClick={() => setOpen(false)}>
             Close ✕
           </button>
@@ -27,9 +27,9 @@ export default function CartDrawer() {
         <div className="drawer-body">
           {items.length === 0 ? (
             <div className="empty">
-              Your bag is empty.
+              Your cart is empty.
               <br />
-              Go cop something from the drop.
+              Browse our products to get started.
             </div>
           ) : (
             items.map((i) => (
@@ -49,7 +49,7 @@ export default function CartDrawer() {
                 <div className="cart-line-info">
                   <div className="cart-line-name">{i.name}</div>
                   <div className="cart-line-meta">
-                    Size {i.size} · {fmt(i.price)}
+                    Pack: {i.size} · {fmt(i.price)}
                   </div>
                   <div className="qty">
                     <button onClick={() => dec(i.key)} aria-label="Decrease">

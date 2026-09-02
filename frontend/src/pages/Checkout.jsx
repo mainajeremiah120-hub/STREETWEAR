@@ -54,12 +54,12 @@ export default function Checkout() {
     return (
       <div className="wrap">
         <div className="confirm">
-          <h1>Order Locked In</h1>
+          <h1>Order Confirmed</h1>
           <p className="num">{order.orderNumber}</p>
-          <p style={{ color: "var(--steel)", maxWidth: 440, margin: "0 auto 24px" }}>
+          <p style={{ color: "var(--muted)", maxWidth: 440, margin: "0 auto 24px" }}>
             We sent a confirmation to {order.customer.email}. Pay{" "}
-            {fmt(order.total)} via {order.paymentMethod.toUpperCase()} and your drop
-            ships within 48 hours.
+            {fmt(order.total)} via {order.paymentMethod.toUpperCase()} and your order
+            will be delivered within 24–48 hours.
           </p>
           <Link to="/shop" className="btn">
             Keep shopping →
@@ -72,7 +72,7 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="center-msg">
-        Your bag is empty.
+        Your cart is empty.
         <br />
         <button className="btn btn-ghost" style={{ marginTop: 20 }} onClick={() => navigate("/shop")}>
           ← Go to the shop
@@ -86,7 +86,7 @@ export default function Checkout() {
       <div className="section-head" style={{ marginTop: 40 }}>
         <div>
           <div className="section-index">[ CHECKOUT ]</div>
-          <h2 className="section-title">Cop It</h2>
+          <h2 className="section-title">Complete Your Order</h2>
         </div>
       </div>
 
@@ -125,7 +125,7 @@ export default function Checkout() {
           </div>
 
           {error && (
-            <p style={{ color: "var(--hazard)", fontFamily: "var(--font-mono)", fontSize: 14 }}>
+            <p style={{ color: "var(--danger)", fontFamily: "var(--font-mono)", fontSize: 14 }}>
               {error}
             </p>
           )}

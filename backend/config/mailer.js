@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 let transporter = null;
 
-const RED = "#e10600";
+const PRIMARY = "#0d9488";
 const BLACK = "#0a0a0a";
 const CARD = "#161616";
 const PAPER = "#e8e4dc";
@@ -42,20 +42,20 @@ function buildHtml(order) {
 
   return `
 <div style="background:${BLACK};padding:32px 16px;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${RED};border-radius:6px;overflow:hidden;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${PRIMARY};border-radius:6px;overflow:hidden;">
     <tr>
-      <td style="background:${RED};padding:20px 28px;">
+      <td style="background:${PRIMARY};padding:20px 28px;">
         <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;color:${BLACK};text-transform:uppercase;">
-          STREET<span style="color:${BLACK};">WEAR</span>
+          KIRIJO <span style="color:${BLACK};font-weight:400;">PHARMACY</span>
         </span>
       </td>
     </tr>
     <tr>
       <td style="padding:28px 28px 8px;">
-        <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:13px;letter-spacing:1px;color:${RED};text-transform:uppercase;">Order confirmed</p>
+        <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:13px;letter-spacing:1px;color:${PRIMARY};text-transform:uppercase;">Order confirmed</p>
         <h1 style="margin:0 0 18px;font-family:Arial,sans-serif;font-size:26px;color:${PAPER};">${order.orderNumber}</h1>
         <p style="margin:0 0 20px;font-family:Arial,sans-serif;font-size:14px;color:${STEEL};line-height:1.5;">
-          Hi ${order.customer.name}, thanks for copping from STREETWEAR. Your order is locked in and ships within 48 hours.
+          Hi ${order.customer.name}, thank you for shopping with KIRIJO PHARMACY. Your order is confirmed and will be delivered within 24–48 hours.
         </p>
       </td>
     </tr>
@@ -72,8 +72,8 @@ function buildHtml(order) {
             <td align="right" style="padding:6px 0 0;font-family:Arial,sans-serif;font-size:13px;color:${STEEL};">${order.shippingFee === 0 ? "FREE" : `KES ${order.shippingFee.toLocaleString()}`}</td>
           </tr>
           <tr>
-            <td style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PAPER};border-top:2px solid ${RED};">Total</td>
-            <td align="right" style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${RED};border-top:2px solid ${RED};">KES ${order.total.toLocaleString()}</td>
+            <td style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PAPER};border-top:2px solid ${PRIMARY};">Total</td>
+            <td align="right" style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PRIMARY};border-top:2px solid ${PRIMARY};">KES ${order.total.toLocaleString()}</td>
           </tr>
         </table>
       </td>
@@ -93,7 +93,7 @@ function buildHtml(order) {
     <tr>
       <td style="padding:18px 28px;background:${BLACK};border-top:1px solid #2a2a2a;">
         <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;color:${STEEL};text-transform:uppercase;">
-          STREETWEAR &mdash; Wear the streets.
+          KIRIJO PHARMACY &mdash; Your health, delivered.
         </p>
       </td>
     </tr>
@@ -114,7 +114,7 @@ export async function sendOrderConfirmation(order) {
 
   const text = `Hi ${order.customer.name},
 
-Thanks for copping from STREETWEAR. Your order is locked in.
+Thank you for shopping with KIRIJO PHARMACY. Your order is confirmed.
 
 Order number: ${order.orderNumber}
 
@@ -127,13 +127,13 @@ Total: KES ${order.total}
 Payment method: ${order.paymentMethod.toUpperCase()}
 Shipping to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.country}
 
-Your drop ships within 48 hours.
+Your order will be delivered within 24–48 hours.
 
-— STREETWEAR`;
+— KIRIJO PHARMACY`;
 
   try {
     await mailer.sendMail({
-      from: `"STREETWEAR" <${emailUser()}>`,
+      from: `"KIRIJO PHARMACY" <${emailUser()}>`,
       to: order.customer.email,
       subject: `Order confirmed — ${order.orderNumber}`,
       text,
@@ -185,9 +185,9 @@ Ship to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.cou
 
   const html = `
 <div style="background:${BLACK};padding:32px 16px;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${RED};border-radius:6px;overflow:hidden;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${PRIMARY};border-radius:6px;overflow:hidden;">
     <tr>
-      <td style="background:${RED};padding:20px 28px;">
+      <td style="background:${PRIMARY};padding:20px 28px;">
         <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;color:${BLACK};text-transform:uppercase;">
           New Order
         </span>
@@ -208,8 +208,8 @@ Ship to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.cou
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
           ${itemRows}
           <tr>
-            <td style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PAPER};border-top:2px solid ${RED};">Total</td>
-            <td align="right" style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${RED};border-top:2px solid ${RED};">KES ${order.total.toLocaleString()}</td>
+            <td style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PAPER};border-top:2px solid ${PRIMARY};">Total</td>
+            <td align="right" style="padding:14px 0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PRIMARY};border-top:2px solid ${PRIMARY};">KES ${order.total.toLocaleString()}</td>
           </tr>
         </table>
       </td>
@@ -231,7 +231,7 @@ Ship to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.cou
 
   try {
     await mailer.sendMail({
-      from: `"STREETWEAR" <${emailUser()}>`,
+      from: `"KIRIJO PHARMACY" <${emailUser()}>`,
       to: ownerEmail,
       subject: `New order — ${order.orderNumber} (KES ${order.total.toLocaleString()})`,
       text,

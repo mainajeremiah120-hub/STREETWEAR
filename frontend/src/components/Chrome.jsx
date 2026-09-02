@@ -8,15 +8,15 @@ export function Navbar() {
     <header className="nav">
       <div className="wrap nav-inner">
         <Link to="/" className="nav-logo">
-          STREET<b>WEAR</b>
+          KIRIJO<span className="nav-logo-tag">PHARMACY</span>
         </Link>
         <nav className="nav-links">
           <NavLink to="/" end>
             Home
           </NavLink>
           <NavLink to="/shop">Shop</NavLink>
-          <NavLink to="/shop?category=hoodies">Hoodies</NavLink>
-          <NavLink to="/shop?category=tshirts">T-Shirts</NavLink>
+          <NavLink to="/shop?category=medicines">Medicines</NavLink>
+          <NavLink to="/shop?category=vitamins">Vitamins</NavLink>
         </nav>
         <button className="cart-btn" onClick={() => setOpen(true)}>
           Cart
@@ -29,9 +29,9 @@ export function Navbar() {
 
 // Types each phrase out like a typewriter, pauses, deletes, then moves to the next
 const TICKER_PHRASES = [
-  "STREETWEAR — DROP 01 LIVE",
-  "FREE SHIPPING OVER KES 1,500",
-  "WEAR THE STREETS",
+  "LICENSED & GENUINE PRODUCTS",
+  "FREE DELIVERY OVER KES 1,500",
+  "CHAT WITH OUR PHARMACIST ON WHATSAPP",
 ];
 
 export function Ticker() {
@@ -78,79 +78,37 @@ export function Ticker() {
   );
 }
 
-// Counts down to a fixed drop date
-export function Countdown({ target }) {
-  const [left, setLeft] = useState(diff(target));
-  useEffect(() => {
-    const t = setInterval(() => setLeft(diff(target)), 1000);
-    return () => clearInterval(t);
-  }, [target]);
-
-  return (
-    <div className="countdown">
-      <span className="countdown-label">
-        Next drop
-        <br />
-        closes in
-      </span>
-      <div className="countdown-units">
-        {[
-          ["Days", left.d],
-          ["Hrs", left.h],
-          ["Min", left.m],
-          ["Sec", left.s],
-        ].map(([tag, val]) => (
-          <div className="count-unit" key={tag}>
-            <div className="count-num">{String(val).padStart(2, "0")}</div>
-            <div className="count-tag">{tag}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function diff(target) {
-  const ms = Math.max(0, new Date(target) - new Date());
-  return {
-    d: Math.floor(ms / 86400000),
-    h: Math.floor((ms / 3600000) % 24),
-    m: Math.floor((ms / 60000) % 60),
-    s: Math.floor((ms / 1000) % 60),
-  };
-}
-
 export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap">
-        <div className="footer-top">STREETWEAR</div>
+        <div className="footer-top">KIRIJO</div>
         <div className="footer-cols">
           <div>
             <h4>Shop</h4>
-            <p><Link to="/shop?category=tshirts">T-Shirts</Link></p>
-            <p><Link to="/shop?category=hoodies">Hoodies</Link></p>
-            <p><Link to="/shop?category=jeans">Jeans</Link></p>
-            <p><Link to="/shop?category=caps">Caps</Link></p>
+            <p><Link to="/shop?category=medicines">Medicines</Link></p>
+            <p><Link to="/shop?category=vitamins">Vitamins</Link></p>
+            <p><Link to="/shop?category=skincare">Skincare</Link></p>
+            <p><Link to="/shop?category=personal-care">Personal Care</Link></p>
           </div>
           <div>
             <h4>Info</h4>
-            <p>Shipping &amp; Returns</p>
-            <p>Size Guide</p>
+            <p>Delivery Info</p>
+            <p>Prescription Upload</p>
             <p>Track Order</p>
             <p>Contact</p>
           </div>
           <div>
             <h4>Follow</h4>
             <p>Instagram</p>
-            <p>TikTok</p>
+            <p>Facebook</p>
             <p>X / Twitter</p>
           </div>
           <div>
-            <h4>STREETWEAR HQ</h4>
+            <h4>KIRIJO PHARMACY</h4>
             <p>Malindi, Kenya</p>
-            <p>hello@streetwear.co.ke</p>
-            <p>&copy; {new Date().getFullYear()} STREETWEAR</p>
+            <p>hello@kirijopharmacy.co.ke</p>
+            <p>&copy; {new Date().getFullYear()} Kirijo Pharmacy</p>
           </div>
         </div>
       </div>

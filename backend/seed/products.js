@@ -1,10 +1,9 @@
-// Catalog for STREETWEAR — prices in KES.
+// Catalog for KIRIJO PHARMACY — prices in KES.
 // `color` is used to render the flat product tile when there's no image.
-// `image` should point at a photo in backend/uploads (served at
-// https://streetwear-ep4g.vercel.app/uploads/<filename> in production, or a
-// real hosted image URL). Using the production domain here — rather than
-// localhost — means the same URL works whether you're testing locally or
-// live, since the file is served by the deployed backend either way.
+// `image` currently points at keyword-matched placeholder photos from
+// loremflickr.com — swap these for your own real product photos (see
+// backend/uploads/ + README) whenever you're ready to go live with real
+// stock photography.
 //
 // After editing this file, run `npm run seed` from backend/ to sync it to
 // the database. This WIPES the products collection and reinserts exactly
@@ -13,45 +12,59 @@
 
 export const products = [
   {
-    name: "Black Hoodie",
-    slug: "black-hoodie",
-    sku: "SW-HOOD-001",
-    image: "https://streetwear-ep4g.vercel.app/uploads/black-hoodie.jpg",
-    category: "hoodies",
-    drop: "DROP 01",
-    price: 1500,
-    description: "Drip kali",
-    color: "#0a0a0a",
-    sizes: ["M"],
-    stock: 10,
+    name: "Paracetamol 500mg",
+    slug: "paracetamol-500mg",
+    sku: "KP-MED-001",
+    image: "https://loremflickr.com/600/750/pills,medicine?lock=1",
+    category: "medicines",
+    drop: "VERIFIED",
+    price: 150,
+    description: "Fast-acting relief from pain and fever. Pharmacist-approved, genuine stock.",
+    color: "#e0f2fe",
+    sizes: ["10 Tablets", "20 Tablets"],
+    stock: 40,
     featured: true,
   },
   {
-    name: "T-shirt",
-    slug: "t-shirt",
-    sku: "SW-TSHIRT-001",
-    image: "https://streetwear-ep4g.vercel.app/uploads/t-shirt-loyalty.jpg",
-    category: "tshirts",
-    drop: "DROP 01",
-    price: 300,
-    description: "Shirt Noma",
-    color: "#0a0a0a",
-    sizes: ["M"],
-    stock: 10,
+    name: "Vitamin C 1000mg",
+    slug: "vitamin-c-1000mg",
+    sku: "KP-VIT-001",
+    image: "https://loremflickr.com/600/750/vitamins,supplement?lock=2",
+    category: "vitamins",
+    drop: "VERIFIED",
+    price: 450,
+    description: "Daily immune support supplement. Easy-to-swallow tablets, no aftertaste.",
+    color: "#fef9c3",
+    sizes: ["30 Tablets", "60 Tablets"],
+    stock: 35,
     featured: true,
   },
   {
-    name: "Trucker Cap",
-    slug: "trucker-cap",
-    sku: "SW-CAP-001",
-    image: "https://streetwear-ep4g.vercel.app/uploads/trucker-cap.jpg",
-    category: "caps",
-    drop: "DROP 01",
-    price: 200,
-    description: "Street Cap",
-    color: "#0a0a0a",
-    sizes: ["One Size"],
-    stock: 10,
+    name: "Hydrating Face Moisturizer",
+    slug: "hydrating-face-moisturizer",
+    sku: "KP-SKN-001",
+    image: "https://loremflickr.com/600/750/skincare,cream?lock=3",
+    category: "skincare",
+    drop: "VERIFIED",
+    price: 850,
+    description: "Gentle daily moisturizer for all skin types. Fragrance-free, dermatologist tested.",
+    color: "#fce7f3",
+    sizes: ["50ml", "100ml"],
+    stock: 20,
+    featured: true,
+  },
+  {
+    name: "Digital Thermometer",
+    slug: "digital-thermometer",
+    sku: "KP-PC-001",
+    image: "https://loremflickr.com/600/750/thermometer,medical?lock=4",
+    category: "personal-care",
+    drop: "VERIFIED",
+    price: 600,
+    description: "Fast, accurate digital body temperature reading in under 60 seconds.",
+    color: "#dcfce7",
+    sizes: ["1 Unit"],
+    stock: 25,
     featured: true,
   },
 ];

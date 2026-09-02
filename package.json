@@ -1,7 +1,7 @@
 {
-  "name": "streetwear",
+  "name": "kirijo-pharmacy",
   "version": "1.0.0",
-  "description": "STREETWEAR streetwear store — MERN monorepo",
+  "description": "KIRIJO PHARMACY — MERN monorepo",
   "private": true,
   "scripts": {
     "install:all": "cd backend && npm install && cd ../frontend && npm install",

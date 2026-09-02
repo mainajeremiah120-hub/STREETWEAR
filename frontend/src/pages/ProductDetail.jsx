@@ -40,7 +40,7 @@ export default function ProductDetail() {
     <div className="wrap">
       <div className="pd">
         <div className="pd-tile" style={{ background: product.color }}>
-          <span className="pd-mark">STREETWEAR</span>
+          <span className="pd-mark">KIRIJO</span>
           {product.image && (
             <img
               src={product.image}
@@ -60,7 +60,7 @@ export default function ProductDetail() {
           <div className="pd-price">{fmt(product.price)}</div>
           <p className="pd-desc">{product.description}</p>
 
-          <div className="label-mono">Select size</div>
+          <div className="label-mono">Select pack size</div>
           <div className="size-row">
             {product.sizes.map((s) => (
               <button
@@ -79,13 +79,13 @@ export default function ProductDetail() {
             disabled={product.soldOut}
             onClick={() => addItem(product, size)}
           >
-            {product.soldOut ? "Sold out" : "Add to bag →"}
+            {product.soldOut ? "Sold out" : "Add to cart →"}
           </button>
 
           <p className="label-mono" style={{ marginTop: 18 }}>
             {product.stock > 0
-              ? `${product.stock} left in this drop · Free shipping over KES 1,500`
-              : "This piece is ghost."}
+              ? `${product.stock} in stock · Free delivery over KES 1,500`
+              : "Currently out of stock."}
           </p>
         </div>
       </div>

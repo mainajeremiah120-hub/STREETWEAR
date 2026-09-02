@@ -8,15 +8,15 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["tshirts", "hoodies", "jeans", "caps"],
+      enum: ["medicines", "vitamins", "skincare", "personal-care"],
     },
-    drop: { type: String, default: "DROP 01" },
+    drop: { type: String, default: "VERIFIED" }, // trust badge shown on the product card, e.g. "VERIFIED"
     price: { type: Number, required: true, min: 0 }, // stored in KES
     description: { type: String, default: "" },
-    // hex color used to render the flat product tile on the frontend
-    color: { type: String, default: "#1A1A1A" },
+    // hex color used to render the flat product tile when there's no image
+    color: { type: String, default: "#f1f5f9" },
     image: { type: String, default: "" }, // optional image URL
-    sizes: { type: [String], default: ["S", "M", "L", "XL"] },
+    sizes: { type: [String], default: ["Standard"] }, // pack sizes / dosages, e.g. "20 Tablets", "100ml"
     stock: { type: Number, default: 0, min: 0 },
     featured: { type: Boolean, default: false },
     soldOut: { type: Boolean, default: false },

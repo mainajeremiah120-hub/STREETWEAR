@@ -1,7 +1,8 @@
-# STREETWEAR — Streetwear Store (MERN)
+# KIRIJO PHARMACY (MERN)
 
-A full-stack streetwear e-commerce site: **M**ongoDB, **E**xpress, **R**eact, **N**ode.
-Drop-culture theme, live countdown, cart, checkout, and a real order/stock system.
+A full-stack pharmacy e-commerce site: **M**ongoDB, **E**xpress, **R**eact, **N**ode.
+Clean, trustworthy storefront for medicines, vitamins, skincare and personal care —
+cart, checkout, order confirmation emails, and a real order/stock system.
 
 ```
 streetwear/
@@ -12,20 +13,23 @@ streetwear/
 ## What's inside
 
 **Frontend (React + Vite + React Router)**
-- Flashy landing page — giant poster type, hazard-orange accents, caution-tape marquee, live drop countdown
-- Shop page with category filters
-- Product detail pages with size selection
+- Clean, light medical-themed landing page with a licensed-pharmacy trust message
+- Shop page with category filters (Medicines, Vitamins, Skincare, Personal Care)
+- Product detail pages with pack-size selection
 - Slide-in cart drawer with quantity controls
 - Checkout with order summary + M-Pesa / cash-on-delivery options
-- Order confirmation screen with a real order number
+- Order confirmation screen with a real order number, plus HTML confirmation emails
+- Floating WhatsApp button to chat with a pharmacist
 - Fully responsive, keyboard-focusable, respects reduced-motion
 
 **Backend (Express + Mongoose)**
 - `Product` and `Order` models
 - Product listing with `?category=`, `?featured=`, `?search=` filters
+- Products automatically disappear from the shop once stock hits 0
 - Order creation that **re-prices on the server** (clients can't fake prices) and **decrements stock**
-- Auto-generated order numbers (e.g. `STREETWEAR-X7K2P`)
-- Free shipping over KES 1,500, else KES 100
+- Auto-generated order numbers (e.g. `SW-X7K2P`)
+- Free delivery over KES 1,500, else KES 100
+- Order confirmation + new-order owner-alert emails via Gmail SMTP
 - CORS, error handling, health check
 
 ---
@@ -48,10 +52,10 @@ cp .env.example .env
 ```
 
 Open `.env` and set your `MONGO_URI`:
-- Local Mongo:  `mongodb://127.0.0.1:27017/streetwear`
-- Atlas:        `mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/streetwear`
+- Local Mongo:  `mongodb://127.0.0.1:27017/kirijo-pharmacy`
+- Atlas:        `mongodb+srv://<user>:<pass>@cluster0.xxxxx.mongodb.net/kirijo-pharmacy`
 
-Seed the catalog (loads the 12 starter products), then start the API:
+Seed the catalog (loads the starter products), then start the API:
 
 ```bash
 npm run seed
@@ -73,7 +77,7 @@ cp .env.example .env    # default points at http://localhost:5000/api
 npm run dev
 ```
 
-Store runs at **http://localhost:5173**. Open it and you'll see the drop.
+Store runs at **http://localhost:5173**.
 
 ---
 
@@ -94,14 +98,16 @@ Store runs at **http://localhost:5173**. Open it and you'll see the drop.
 
 ## 5. Making it yours
 
-- **Brand name / copy:** edit `frontend/src/components/Chrome.jsx` (logo + marquee) and `frontend/src/pages/Landing.jsx`.
-- **Colors:** all theming lives in CSS variables at the top of `frontend/src/index.css` (`--hazard`, `--concrete`, etc.).
-- **Products & photos:** edit `backend/seed/products.js`, then re-run `npm run seed`. Each product ships with a keyword-matched placeholder photo from loremflickr.com. Swap the `image` field to your own product photo URLs (Cloudinary, S3, etc.) when you shoot the real drop. If an image ever fails to load, the card falls back to a solid tile automatically.
+- **Brand name / copy:** edit `frontend/src/components/Chrome.jsx` (logo + ticker) and `frontend/src/pages/Landing.jsx`.
+- **Colors:** all theming lives in CSS variables at the top of `frontend/src/index.css` (`--primary`, `--secondary`, `--bg`, etc.).
+- **Categories:** the allowed set lives in `backend/models/Product.js` (`category` enum) — keep `frontend/src/pages/Shop.jsx` and `frontend/src/components/Chrome.jsx` in sync when you change it.
+- **Products & photos:** edit `backend/seed/products.js`, then re-run `npm run seed`. Each product ships with a keyword-matched placeholder photo from loremflickr.com. Swap the `image` field to your own real product photo URLs (drop files in `backend/uploads/`, or use Cloudinary/S3) once you're ready to go live. If an image ever fails to load, the card falls back to a solid tile automatically.
 - **Real payments:** the checkout records the order and payment method but doesn't charge yet. To go live, integrate **M-Pesa Daraja STK Push** (Safaricom) or a card processor in `backend/controllers/orderController.js`.
 
 ## 6. Before going to production
 
-This is a solid starter, not a hardened production app. Add before launch:
+This is a solid starter, not a hardened production app — and a **real pharmacy business also has real regulatory requirements** on top of the usual engineering ones. Before launch:
+- Confirm your pharmacy licensing and dispensing regulations with the relevant authority (e.g. Pharmacy and Poisons Board in Kenya) — prescription-only medicines generally cannot be sold through a self-serve checkout like this without proper pharmacist verification built in.
 - Authentication + admin protection on the product/order write routes
 - Input validation (e.g. `zod` or `express-validator`)
 - Rate limiting and `helmet`
@@ -110,4 +116,4 @@ This is a solid starter, not a hardened production app. Add before launch:
 
 ---
 
-Built for STREETWEAR. Wear the streets.
+Built for KIRIJO PHARMACY. Your health, delivered.

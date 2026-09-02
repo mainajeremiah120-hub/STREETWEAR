@@ -11,7 +11,7 @@ async function seed() {
   try {
     await Product.deleteMany({});
     await Product.insertMany(products);
-    console.log(`Seeded ${products.length} products into the STREETWEAR catalog.`);
+    console.log(`Seeded ${products.length} products into the KIRIJO PHARMACY catalog.`);
   } catch (err) {
     console.error("Seed failed:", err.message);
   } finally {
