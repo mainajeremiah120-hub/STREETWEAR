@@ -78,7 +78,14 @@ export default function ProductsList() {
                       <span className="status-badge status-delivered">In stock</span>
                     )}
                   </td>
-                  <td>
+                  <td className="table-actions">
+                    <Link
+                      to={`/admin/products/${p._id}/edit`}
+                      className="btn btn-ghost table-action-btn"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Edit
+                    </Link>
                     <button
                       className="cart-remove"
                       onClick={(e) => handleDelete(e, p._id, p.name)}

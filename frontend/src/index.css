@@ -1046,6 +1046,17 @@ img {
 .table tbody tr:last-child td {
   border-bottom: none;
 }
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+.table-action-btn {
+  padding: 6px 12px;
+  box-shadow: none;
+  font-size: 11px;
+}
 
 .pagination {
   display: flex;
