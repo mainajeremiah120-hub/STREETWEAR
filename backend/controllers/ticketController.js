@@ -1,5 +1,4 @@
 import Ticket from "../models/Ticket.js";
-import { sendNewTicketAlert } from "../config/mailer.js";
 
 // A single scripted acknowledgment, not an AI/automated bot — just confirms
 // the message landed and sets expectations while a human catches up.
@@ -28,8 +27,6 @@ export async function createOrContinueTicket(req, res, next) {
     ticket.lastMessageAt = new Date();
     if (name && !ticket.visitorName) ticket.visitorName = name;
     await ticket.save();
-
-    if (isNew) sendNewTicketAlert(ticket); // fire-and-forget, only on brand-new tickets
 
     res.status(isNew ? 201 : 200).json(ticket);
   } catch (err) {
