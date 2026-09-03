@@ -4,8 +4,12 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { connectDB } from "./config/db.js";
+import { ensureAdminBootstrap } from "./config/bootstrapAdmin.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import settingsRoutes from "./routes/settingsRoutes.js";
+import adminSettingsRoutes from "./routes/adminSettingsRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 dotenv.config();
@@ -32,13 +36,17 @@ app.get("/", (req, res) => {
 
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin/auth", adminAuthRoutes);
+app.use("/api/settings", settingsRoutes);
+app.use("/api/admin/settings", adminSettingsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-connectDB().then(() => {
+connectDB().then(async () => {
+  await ensureAdminBootstrap();
   app.listen(PORT, () => {
     console.log(`KIRIJO PHARMACY API running on http://localhost:${PORT}`);
   });

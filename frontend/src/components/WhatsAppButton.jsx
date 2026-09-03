@@ -1,11 +1,26 @@
-// Kenyan number 0740687321 in international format for a wa.me deep link.
-const WHATSAPP_NUMBER = "254740687321";
+import { useEffect, useState } from "react";
+import { publicApi } from "../api/client.js";
+
+// Kenyan number 0740687321 in international format for a wa.me deep link —
+// kept as a fallback default so this never breaks if the settings fetch is
+// slow or the API is briefly down. The admin dashboard can change the real
+// number from Settings without a redeploy.
+const DEFAULT_NUMBER = "254740687321";
 
 export default function WhatsAppButton() {
+  const [number, setNumber] = useState(DEFAULT_NUMBER);
+
+  useEffect(() => {
+    publicApi
+      .getSettings()
+      .then((s) => s?.whatsappNumber && setNumber(s.whatsappNumber))
+      .catch(() => {});
+  }, []);
+
   return (
     <a
       className="whatsapp-fab"
-      href={`https://wa.me/${WHATSAPP_NUMBER}`}
+      href={`https://wa.me/${number}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with our pharmacist on WhatsApp"

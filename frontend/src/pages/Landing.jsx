@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../api/client.js";
+import { api, publicApi } from "../api/client.js";
 import { Ticker } from "../components/Chrome.jsx";
 import ProductCard from "../components/ProductCard.jsx";
+
+// Fallback defaults so the page never breaks if the settings fetch is slow
+// or the API is briefly down — the admin dashboard can edit both from
+// Settings/How It Works without a redeploy.
+const DEFAULT_WHATSAPP = "254740687321";
+const DEFAULT_STEPS = [
+  { title: "Order online", description: "Browse medicines, vitamins, skincare and more. Add to cart and check out in minutes." },
+  { title: "Verified by our pharmacist", description: "Every order is reviewed for accuracy and authenticity before it's packed." },
+  { title: "Fast, discreet delivery", description: "Pay with M-Pesa or cash on delivery. Most orders arrive within 24–48 hours." },
+];
 
 export default function Landing() {
   const [featured, setFeatured] = useState([]);
   const [error, setError] = useState(null);
+  const [whatsapp, setWhatsapp] = useState(DEFAULT_WHATSAPP);
+  const [steps, setSteps] = useState(DEFAULT_STEPS);
 
   useEffect(() => {
     api
       .getProducts("?featured=true")
       .then((data) => setFeatured(data.slice(0, 8)))
       .catch((err) => setError(err.message));
+
+    publicApi
+      .getSettings()
+      .then((s) => {
+        if (s?.whatsappNumber) setWhatsapp(s.whatsappNumber);
+        if (s?.howItWorks?.length) setSteps(s.howItWorks);
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -35,7 +55,7 @@ export default function Landing() {
               Shop now →
             </Link>
             <a
-              href="https://wa.me/254740687321"
+              href={`https://wa.me/${whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-ghost"
@@ -107,17 +127,13 @@ export default function Landing() {
             </div>
           </div>
           <div className="grid">
-            {[
-              ["Order online", "Browse medicines, vitamins, skincare and more. Add to cart and check out in minutes."],
-              ["Verified by our pharmacist", "Every order is reviewed for accuracy and authenticity before it's packed."],
-              ["Fast, discreet delivery", "Pay with M-Pesa or cash on delivery. Most orders arrive within 24–48 hours."],
-            ].map(([t, d], i) => (
-              <div className="card" key={t} style={{ padding: 26 }}>
+            {steps.map((s, i) => (
+              <div className="card" key={s._id || s.title} style={{ padding: 26 }}>
                 <div className="section-index">0{i + 1}</div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 26, margin: "10px 0 12px" }}>
-                  {t}
+                  {s.title}
                 </h3>
-                <p style={{ color: "var(--muted)", lineHeight: 1.55 }}>{d}</p>
+                <p style={{ color: "var(--muted)", lineHeight: 1.55 }}>{s.description}</p>
               </div>
             ))}
           </div>
