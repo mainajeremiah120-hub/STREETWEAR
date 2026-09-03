@@ -1146,7 +1146,6 @@ img {
   border-radius: 50%;
   background: var(--primary);
   color: #fff;
-  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1154,6 +1153,10 @@ img {
 }
 .chat-fab:hover {
   transform: scale(1.08);
+}
+.chat-fab svg {
+  width: 26px;
+  height: 26px;
 }
 .chat-panel {
   position: fixed;
@@ -1186,13 +1189,6 @@ img {
   flex-direction: column;
   gap: 10px;
   min-height: 180px;
-}
-.chat-empty {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--muted);
-  text-align: center;
-  margin-top: 20px;
 }
 .chat-resolved {
   font-family: var(--font-mono);

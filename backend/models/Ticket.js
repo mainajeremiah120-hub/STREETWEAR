@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema(
   {
-    sender: { type: String, enum: ["visitor", "admin"], required: true },
+    sender: { type: String, enum: ["visitor", "admin", "bot"], required: true },
     text: { type: String, required: true, trim: true },
     createdAt: { type: Date, default: Date.now },
   },

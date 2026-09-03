@@ -1,6 +1,10 @@
 import Ticket from "../models/Ticket.js";
 import { sendNewTicketAlert } from "../config/mailer.js";
 
+// A single scripted acknowledgment, not an AI/automated bot — just confirms
+// the message landed and sets expectations while a human catches up.
+const BOT_ACK_TEXT = "Thanks for reaching out! Please hold on a moment while we connect you with our team.";
+
 // POST /api/tickets — creates a new ticket if the visitor has no open one,
 // otherwise appends to their existing open ticket.
 export async function createOrContinueTicket(req, res, next) {
@@ -18,6 +22,9 @@ export async function createOrContinueTicket(req, res, next) {
     }
 
     ticket.messages.push({ sender: "visitor", text: text.trim() });
+    if (isNew) {
+      ticket.messages.push({ sender: "bot", text: BOT_ACK_TEXT });
+    }
     ticket.lastMessageAt = new Date();
     if (name && !ticket.visitorName) ticket.visitorName = name;
     await ticket.save();
