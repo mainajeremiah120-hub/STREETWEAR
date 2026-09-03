@@ -5,12 +5,21 @@ const VISITOR_KEY = "kirijo_visitor_id";
 const POLL_MS = 4000;
 const GREETING = "Hi! What can we help you with today?";
 
+// sessionStorage (not localStorage) so a conversation only lasts for this
+// browser tab/session — it resets automatically once the tab or browser is
+// closed, rather than persisting forever on a shared/public device.
 function getVisitorId() {
-  let id = localStorage.getItem(VISITOR_KEY);
+  let id = sessionStorage.getItem(VISITOR_KEY);
   if (!id) {
     id = crypto.randomUUID();
-    localStorage.setItem(VISITOR_KEY, id);
+    sessionStorage.setItem(VISITOR_KEY, id);
   }
+  return id;
+}
+
+function newVisitorId() {
+  const id = crypto.randomUUID();
+  sessionStorage.setItem(VISITOR_KEY, id);
   return id;
 }
 
@@ -45,6 +54,15 @@ function PersonIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function PlusIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
     </svg>
   );
 }
@@ -93,6 +111,18 @@ export default function LiveChatWidget() {
     }
   }
 
+  // Lets anyone clear the current conversation and start fresh at any
+  // time — important on a shared device where the next person shouldn't
+  // see (or accidentally continue) someone else's chat.
+  function startNewChat() {
+    if (ticket && !confirm("Start a new chat? Your current conversation will stay saved with our team, but this widget won't show it anymore.")) {
+      return;
+    }
+    newVisitorId();
+    setTicket(null);
+    setText("");
+  }
+
   return (
     <>
       <button
@@ -109,7 +139,10 @@ export default function LiveChatWidget() {
             <span className="chat-avatar">
               <PersonIcon />
             </span>
-            <span>Chat with KIRIJO PHARMACY</span>
+            <span className="chat-panel-title">Chat with KIRIJO PHARMACY</span>
+            <button className="chat-new-btn" onClick={startNewChat} aria-label="Start a new chat" title="Start a new chat">
+              <PlusIcon />
+            </button>
           </div>
           <div className="chat-panel-body" ref={bodyRef}>
             <div className="chat-row">

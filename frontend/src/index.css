@@ -1184,6 +1184,27 @@ img {
   align-items: center;
   gap: 10px;
 }
+.chat-panel-title {
+  flex: 1;
+}
+.chat-new-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chat-new-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+.chat-new-btn svg {
+  width: 15px;
+  height: 15px;
+}
 .chat-avatar {
   flex-shrink: 0;
   width: 30px;
