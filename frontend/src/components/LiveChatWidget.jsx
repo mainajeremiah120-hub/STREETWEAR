@@ -40,6 +40,15 @@ function SendIcon() {
   );
 }
 
+function PersonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
 export default function LiveChatWidget() {
   const [open, setOpen] = useState(false);
   const [ticket, setTicket] = useState(null);
@@ -97,15 +106,32 @@ export default function LiveChatWidget() {
       {open && (
         <div className="chat-panel" role="dialog" aria-label="Live chat">
           <div className="chat-panel-head">
+            <span className="chat-avatar">
+              <PersonIcon />
+            </span>
             <span>Chat with KIRIJO PHARMACY</span>
           </div>
           <div className="chat-panel-body" ref={bodyRef}>
-            <div className="chat-msg chat-msg-bot">{GREETING}</div>
-            {ticket?.messages.map((m, i) => (
-              <div key={i} className={`chat-msg chat-msg-${m.sender}`}>
-                {m.text}
-              </div>
-            ))}
+            <div className="chat-row">
+              <span className="chat-avatar chat-avatar-sm">
+                <PersonIcon />
+              </span>
+              <div className="chat-msg chat-msg-bot">{GREETING}</div>
+            </div>
+            {ticket?.messages.map((m, i) =>
+              m.sender === "visitor" ? (
+                <div key={i} className="chat-msg chat-msg-visitor">
+                  {m.text}
+                </div>
+              ) : (
+                <div key={i} className="chat-row">
+                  <span className="chat-avatar chat-avatar-sm">
+                    <PersonIcon />
+                  </span>
+                  <div className={`chat-msg chat-msg-${m.sender}`}>{m.text}</div>
+                </div>
+              )
+            )}
             {ticket?.status === "resolved" && (
               <p className="chat-resolved">This conversation was marked resolved. Send a new message to start again.</p>
             )}
