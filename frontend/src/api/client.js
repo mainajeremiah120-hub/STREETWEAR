@@ -58,6 +58,8 @@ export const adminApi = {
   getOrder: (id) => request(`/admin/orders/${id}`),
   updateOrderStatus: (id, payload) =>
     request(`/admin/orders/${id}/status`, { method: "PATCH", body: JSON.stringify(payload) }),
+  resetAllOrders: (password) =>
+    request("/admin/orders/reset-all", { method: "DELETE", body: JSON.stringify({ password }) }),
   getProducts: (query = "") => request(`/admin/products${query}`),
   getProduct: (id) => request(`/admin/products/${id}`),
   createProduct: (payload) =>

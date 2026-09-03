@@ -18,6 +18,12 @@ export default function Settings() {
   const [waError, setWaError] = useState(null);
   const [waSuccess, setWaSuccess] = useState(false);
 
+  // Danger zone — reset all orders
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetSubmitting, setResetSubmitting] = useState(false);
+  const [resetError, setResetError] = useState(null);
+  const [resetSuccess, setResetSuccess] = useState(null);
+
   useEffect(() => {
     adminApi
       .getSettings()
@@ -74,6 +80,33 @@ export default function Settings() {
     }
   }
 
+  async function submitReset(e) {
+    e.preventDefault();
+    setResetError(null);
+    setResetSuccess(null);
+    if (!resetPassword) {
+      setResetError("Enter your password to confirm.");
+      return;
+    }
+    if (
+      !confirm(
+        "This permanently deletes EVERY order and all its revenue history. This cannot be undone. Are you absolutely sure?"
+      )
+    ) {
+      return;
+    }
+    setResetSubmitting(true);
+    try {
+      const { deletedCount } = await adminApi.resetAllOrders(resetPassword);
+      setResetSuccess(`Deleted ${deletedCount} order${deletedCount === 1 ? "" : "s"}.`);
+      setResetPassword("");
+    } catch (err) {
+      setResetError(err.message);
+    } finally {
+      setResetSubmitting(false);
+    }
+  }
+
   return (
     <div>
       <h1 className="admin-page-title">Settings</h1>
@@ -126,6 +159,31 @@ export default function Settings() {
             </button>
           </>
         )}
+      </form>
+
+      <form onSubmit={submitReset} className="admin-card danger-zone" style={{ maxWidth: 480 }}>
+        <h3>Danger zone</h3>
+        <p className="label-mono" style={{ marginBottom: 14 }}>
+          Permanently deletes every order and all revenue figures (which are calculated live from
+          orders, so there's nothing separate to reset). This cannot be undone.
+        </p>
+        <div className="field">
+          <label>Your password</label>
+          <input type="password" value={resetPassword} onChange={(e) => setResetPassword(e.target.value)} />
+        </div>
+        {resetError && (
+          <p style={{ color: "var(--danger)", fontFamily: "var(--font-mono)", fontSize: 13, marginBottom: 10 }}>{resetError}</p>
+        )}
+        {resetSuccess && (
+          <p style={{ color: "var(--secondary)", fontFamily: "var(--font-mono)", fontSize: 13, marginBottom: 10 }}>{resetSuccess}</p>
+        )}
+        <button
+          className="btn"
+          style={{ width: "100%", justifyContent: "center", background: "var(--danger)" }}
+          disabled={resetSubmitting}
+        >
+          {resetSubmitting ? "Deleting…" : "Reset all order data →"}
+        </button>
       </form>
     </div>
   );

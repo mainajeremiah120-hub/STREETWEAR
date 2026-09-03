@@ -440,6 +440,17 @@ img {
   flex-wrap: wrap;
   margin-bottom: 34px;
 }
+.date-filters {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+.date-filters .field {
+  margin-bottom: 0;
+  min-width: 160px;
+}
 .chip {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -965,6 +976,13 @@ img {
   font-size: 17px;
   margin-bottom: 14px;
   color: var(--text);
+}
+.danger-zone {
+  border-color: var(--danger);
+  background: #fef2f2;
+}
+.danger-zone h3 {
+  color: var(--danger);
 }
 .admin-detail-grid {
   display: grid;
