@@ -28,7 +28,7 @@ export async function getProductBySlug(req, res, next) {
   }
 }
 
-// POST /api/products  (admin — no auth in this starter, add before production)
+// POST /api/admin/products — mounted with the `protect` auth middleware
 export async function createProduct(req, res, next) {
   try {
     const product = await Product.create(req.body);

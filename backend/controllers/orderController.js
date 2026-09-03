@@ -44,6 +44,7 @@ export async function createOrder(req, res, next) {
       shippingFee,
       total,
       paymentMethod: paymentMethod || "mpesa",
+      statusHistory: [{ status: "received", changedAt: new Date() }],
     });
 
     // Decrement stock, and mark sold out (clamped at 0) once it runs out
@@ -74,16 +75,6 @@ export async function getOrderByNumber(req, res, next) {
     const order = await Order.findOne({ orderNumber: req.params.orderNumber });
     if (!order) return res.status(404).json({ message: "Order not found" });
     res.json(order);
-  } catch (err) {
-    next(err);
-  }
-}
-
-// GET /api/orders  (admin)
-export async function getOrders(req, res, next) {
-  try {
-    const orders = await Order.find().sort({ createdAt: -1 });
-    res.json(orders);
   } catch (err) {
     next(err);
   }

@@ -241,3 +241,117 @@ Ship to: ${order.shipping.address}, ${order.shipping.city}, ${order.shipping.cou
     console.error("Failed to send owner order alert:", err.message);
   }
 }
+
+const STATUS_LABEL = {
+  received: "Received",
+  packaged: "Packaged",
+  delivered: "Delivered",
+  cancelled: "Cancelled",
+};
+
+// Notifies the customer whenever the admin changes their order's status.
+export async function sendOrderStatusUpdate(order) {
+  const mailer = getTransporter();
+  if (!mailer) return; // already warned in sendOrderConfirmation
+
+  const latest = order.statusHistory[order.statusHistory.length - 1];
+  const label = STATUS_LABEL[order.status] || order.status;
+  const reasonLine = order.status === "cancelled" && latest?.reason ? `\nReason: ${latest.reason}` : "";
+
+  const text = `Hi ${order.customer.name},
+
+Your order ${order.orderNumber} is now: ${label}${reasonLine}
+
+— KIRIJO PHARMACY`;
+
+  const html = `
+<div style="background:${BLACK};padding:32px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${PRIMARY};border-radius:6px;overflow:hidden;">
+    <tr>
+      <td style="background:${PRIMARY};padding:20px 28px;">
+        <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;color:${BLACK};text-transform:uppercase;">
+          KIRIJO <span style="color:${BLACK};font-weight:400;">PHARMACY</span>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px;">
+        <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:13px;letter-spacing:1px;color:${PRIMARY};text-transform:uppercase;">Order update</p>
+        <h1 style="margin:0 0 10px;font-family:Arial,sans-serif;font-size:26px;color:${PAPER};">${order.orderNumber}</h1>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:18px;font-weight:700;color:${PAPER};">${label}</p>
+        ${
+          reasonLine
+            ? `<p style="margin:10px 0 0;font-family:Arial,sans-serif;font-size:14px;color:${STEEL};">Reason: ${latest.reason}</p>`
+            : ""
+        }
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:18px 28px;background:${BLACK};border-top:1px solid #2a2a2a;">
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;letter-spacing:1px;color:${STEEL};text-transform:uppercase;">
+          KIRIJO PHARMACY &mdash; Your health, delivered.
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>`;
+
+  try {
+    await mailer.sendMail({
+      from: `"KIRIJO PHARMACY" <${emailUser()}>`,
+      to: order.customer.email,
+      subject: `Order update — ${order.orderNumber}: ${label}`,
+      text,
+      html,
+    });
+  } catch (err) {
+    console.error("Failed to send order status update email:", err.message);
+  }
+}
+
+// Notifies the admin whenever a brand-new support ticket is opened (not on
+// every follow-up message, to avoid spamming the inbox).
+export async function sendNewTicketAlert(ticket) {
+  const mailer = getTransporter();
+  if (!mailer) return;
+
+  const ownerEmail = (process.env.OWNER_EMAIL || "").trim() || emailUser();
+  if (!ownerEmail) return;
+
+  const firstMessage = ticket.messages[0]?.text || "";
+
+  const text = `New support chat message${ticket.visitorName ? ` from ${ticket.visitorName}` : ""}:
+
+${firstMessage}
+
+Reply from the admin dashboard: Tickets.`;
+
+  const html = `
+<div style="background:${BLACK};padding:32px 16px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;margin:0 auto;background:${CARD};border:2px solid ${PRIMARY};border-radius:6px;overflow:hidden;">
+    <tr>
+      <td style="background:${PRIMARY};padding:20px 28px;">
+        <span style="font-family:Arial,sans-serif;font-size:22px;font-weight:900;letter-spacing:1px;color:${BLACK};text-transform:uppercase;">New Chat Message</span>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px;">
+        <p style="margin:0 0 14px;font-family:Arial,sans-serif;font-size:14px;color:${STEEL};">${ticket.visitorName ? `From ${ticket.visitorName}` : "From a site visitor"}</p>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;color:${PAPER};line-height:1.6;">${firstMessage}</p>
+      </td>
+    </tr>
+  </table>
+</div>`;
+
+  try {
+    await mailer.sendMail({
+      from: `"KIRIJO PHARMACY" <${emailUser()}>`,
+      to: ownerEmail,
+      subject: "New support chat message",
+      text,
+      html,
+    });
+  } catch (err) {
+    console.error("Failed to send new ticket alert:", err.message);
+  }
+}

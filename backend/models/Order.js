@@ -11,6 +11,17 @@ const orderItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const ORDER_STATUSES = ["received", "packaged", "delivered", "cancelled"];
+
+const statusHistorySchema = new mongoose.Schema(
+  {
+    status: { type: String, enum: ORDER_STATUSES, required: true },
+    reason: { type: String, default: "" }, // required only when status is "cancelled" — enforced in the controller
+    changedAt: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
+
 const orderSchema = new mongoose.Schema(
   {
     customer: {
@@ -30,9 +41,10 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: { type: String, enum: ["mpesa", "cod"], default: "mpesa" },
     status: {
       type: String,
-      enum: ["pending", "paid", "shipped", "delivered", "cancelled"],
-      default: "pending",
+      enum: ORDER_STATUSES,
+      default: "received",
     },
+    statusHistory: { type: [statusHistorySchema], default: [] },
     orderNumber: { type: String, unique: true },
   },
   { timestamps: true }
@@ -49,3 +61,4 @@ orderSchema.pre("save", function (next) {
 
 const Order = mongoose.model("Order", orderSchema);
 export default Order;
+export { ORDER_STATUSES };
